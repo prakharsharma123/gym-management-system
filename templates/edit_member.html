@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Member | Mahadev Fitness Club</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- Background Video -->
+<video autoplay muted loop id="bg-video">
+    <source src="{{ url_for('static', filename='gym-bg.mp4') }}" type="video/mp4">
+</video>
+
+<header>🏋️ Mahadev Fitness Club</header>
+
+<div class="page-center">
+    <div class="container glass">
+
+        <h2 class="form-title">Edit Member</h2>
+        <p class="form-subtitle">
+            Update details or change membership plan
+        </p>
+
+        <form method="POST">
+
+            <input type="text" name="name" value="{{ m.name }}" placeholder="Full Name" required>
+
+            <input type="text" name="phone" value="{{ m.phone }}" placeholder="Phone Number" required>
+
+            <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Select Membership Plan</label>
+            <select name="plan" id="plan" required onchange="updateFees()">
+                <option value="1_month" {% if m.plan=='1_month' %}selected{% endif %}>1 Month - ₹1,000</option>
+                <option value="3_month" {% if m.plan=='3_month' %}selected{% endif %}>3 Months - ₹2,500</option>
+                <option value="6_month" {% if m.plan=='6_month' %}selected{% endif %}>6 Months - ₹4,000</option>
+                <option value="1_year" {% if m.plan=='1_year' %}selected{% endif %}>1 Year - ₹8,000</option>
+            </select>
+
+            <label style="display: block; margin-top: 1rem; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">Membership Fees</label>
+            <input type="number" name="fees" id="fees" value="{{ m.fees }}" placeholder="Fees" required readonly style="background: rgba(0,0,0,0.3);">
+
+            <button type="submit" style="margin-top: 1rem;">💾 Save Changes</button>
+
+        </form>
+
+        <br>
+        <a href="/members" style="text-decoration:none;">⬅ Back to Members</a>
+
+    </div>
+</div>
+
+<script>
+function updateFees() {
+    const plan = document.getElementById('plan').value;
+    const feesInput = document.getElementById('fees');
+    
+    const fees = {
+        '1_month': 1000,
+        '3_month': 2500,
+        '6_month': 4000,
+        '1_year': 8000
+    };
+    
+    if (plan && fees[plan]) {
+        feesInput.value = fees[plan];
+    }
+}
+
+// Set initial fee on page load
+window.onload = function() {
+    updateFees();
+};
+</script>
+
+</body>
+</html>
